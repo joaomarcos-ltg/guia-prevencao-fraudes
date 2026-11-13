@@ -156,4 +156,16 @@ const bancoGolpes = [
     audioUrl: "audios/episodio-13-clonagem-voz-ia.mp3",
     tags: ["clonagem de voz", "deepfake", "inteligencia artificial", "ligacao muda", "robocall", "audio falso", "sequestro falso", "voz", "podcast"]
   },
+  {
+    id: "exposicao-foto-perfil-whatsapp",
+    categoria: "whatsapp",
+    categoriaLabel: "Privacidade & Engenharia Social",
+    titulo: "Perigo na Foto de Perfil do WhatsApp: Exposição Familiar",
+    resumo: "Manter fotos de rosto ou com familiares visíveis para todos permite que golpistas mapeiem sua rotina e parentes em grupos abertos.",
+    comoFunciona: "Ao participar de grupos abertos de condomínio, bairro, vendas ou eventos, qualquer integrante desconhecido visualiza seu número e sua foto de perfil. Imagens que exibem cônjuge, filhos, uniformes escolares ou placas de veículos permitem que criminosos cruzem dados vazados para aplicar golpes de falsa emergência, extorsão, clonagem de perfil ou abordagens presenciais.",
+    prevencao: "Acesse Configurações > Privacidade > Foto do perfil no WhatsApp e altere a visibilidade de 'Todos' para 'Meus contatos'. Evite fotos com filhos ou familiares em números usados em grupos públicos, dando preferência a imagens neutras (paisagens ou arte abstrata), e mantenha a confirmação em duas etapas ativada.",
+    episodioLabel: "Ep. 14 • Perigo na Foto de Perfil do WhatsApp",
+    audioUrl: "audios/episodio-14-foto-perfil-whatsapp.mp3",
+    tags: ["foto de perfil", "whatsapp", "privacidade", "familia", "filhos", "grupos abertos", "engenharia social", "clonagem", "extorsao", "podcast"]
+  },
 ];
