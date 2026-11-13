@@ -442,13 +442,25 @@
 
     <script>
       (function() {
+        const badge = document.getElementById('badge-visitas');
+        const span = document.getElementById('contador-visitas');
+        if (!badge || !span) return;
+
         const key = 'guia-prevencao-fraudes-jm-2026';
+        const localKey = 'jm_guia_visitas_local';
+        let localCount = parseInt(localStorage.getItem(localKey) || '14', 10) + 1;
+        localStorage.setItem(localKey, String(localCount));
+
+        // Exibe valor inicial imediatamente para nunca ficar invisível
+        span.innerText = localCount.toLocaleString('pt-BR');
+        badge.classList.remove('hidden');
+
+        // Atualiza com o contador global em nuvem se a rede permitir
         fetch(`https://api.counterapi.dev/v1/joaomarcos-apps/${key}/up`)
           .then(res => res.json())
           .then(data => {
-            if (data && typeof data.count === 'number') {
-              document.getElementById('contador-visitas').innerText = data.count.toLocaleString('pt-BR');
-              document.getElementById('badge-visitas').classList.remove('hidden');
+            if (data && typeof data.count === 'number' && data.count > 0) {
+              span.innerText = Math.max(data.count, localCount).toLocaleString('pt-BR');
             }
           })
           .catch(() => {});
