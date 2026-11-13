@@ -6,6 +6,10 @@
   <title>Guia Digital de Prevenção a Fraudes | João Marcos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
 
@@ -390,9 +394,15 @@
     <section class="max-w-5xl mx-auto px-4 mt-12 mb-8">
       <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <span class="inline-block text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full mb-2">
-            Utilidade Pública &amp; Educação Digital
-          </span>
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
+              Utilidade Pública &amp; Educação Digital
+            </span>
+            <span id="badge-visitas" class="hidden inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 bg-slate-900/90 border border-slate-700 px-3 py-1 rounded-full">
+              <i class="fa-solid fa-eye text-emerald-400"></i>
+              <span id="contador-visitas">...</span> acessos
+            </span>
+          </div>
           <h3 class="text-xl font-bold text-white">Curadoria: João Marcos</h3>
           <p class="text-sm text-slate-300 mt-1">
             Coordenador de Infraestruturas em TI e Desenvolvimento de Aplicativos Pessoais
@@ -429,5 +439,20 @@
       });
     </script>
     
+
+    <script>
+      (function() {
+        const key = 'guia-prevencao-fraudes-jm-2026';
+        fetch(`https://api.counterapi.dev/v1/joaomarcos-apps/${key}/up`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && typeof data.count === 'number') {
+              document.getElementById('contador-visitas').innerText = data.count.toLocaleString('pt-BR');
+              document.getElementById('badge-visitas').classList.remove('hidden');
+            }
+          })
+          .catch(() => {});
+      })();
+    </script>
 </body>
 </html>
