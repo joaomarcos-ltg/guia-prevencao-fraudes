@@ -168,4 +168,16 @@ const bancoGolpes = [
     audioUrl: "audios/episodio-14-foto-perfil-whatsapp.mp3",
     tags: ["foto de perfil", "whatsapp", "privacidade", "familia", "filhos", "grupos abertos", "engenharia social", "clonagem", "extorsao", "podcast"]
   },
+  {
+    id: "clonagem-impressao-digital-fotos",
+    categoria: "whatsapp",
+    categoriaLabel: "Biometria & Inteligência Artificial",
+    titulo: "Clonagem de Impressão Digital em Fotos (Sinal de Paz e Amor)",
+    resumo: "Fotos nítidas mostrando a ponta dos dedos voltada para a câmera permitem que softwares com IA reconstituam suas impressões digitais.",
+    comoFunciona: "Câmeras modernas de alta resolução aliadas a ferramentas de nitidez por Inteligência Artificial conseguem extrair os sulcos das digitais a partir de fotos tiradas a até 3 metros de distância. Como a biometria não pode ser alterada como uma senha, o vazamento compromete autenticações biométricas.",
+    prevencao: "Evite publicar fotos em alta definição com a ponta dos dedos ou a palma das mãos voltadas para a câmera. Nos aplicativos bancários, combine a biometria com senha ou PIN numérico forte e desconfie de apps que peçam fotos das suas mãos.",
+    episodioLabel: "Ep. 15 • Clonagem de Digital em Fotos",
+    audioUrl: "audios/episodio-15-clonagem-digital-fotos.mp3",
+    tags: ["biometria", "impressao digital", "paz e amor", "fotos", "inteligencia artificial", "celular", "banco", "privacidade", "podcast"]
+  },
 ];
