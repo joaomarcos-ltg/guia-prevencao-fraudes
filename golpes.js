@@ -180,4 +180,16 @@ const bancoGolpes = [
     audioUrl: "audios/episodio-15-clonagem-digital-fotos.mp3",
     tags: ["biometria", "impressao digital", "paz e amor", "fotos", "inteligencia artificial", "celular", "banco", "privacidade", "podcast"]
   },
+  {
+    id: "clonagem-chaves-fotos-impressao-3d",
+    categoria: "whatsapp",
+    categoriaLabel: "Segurança Física & Inteligência Artificial",
+    titulo: "Clonagem de Chaves por Fotos e Impressão 3D",
+    resumo: "Fotos publicadas nas redes sociais onde aparecem chaves sobre a mesa ou na mão permitem criar cópias físicas funcionais.",
+    comoFunciona: "A partir de uma foto nítida dos dentes da chave, softwares de visão computacional calculam a profundidade exata dos cortes e geram um modelo digital para impressão 3D ou corte mecânico, permitindo abrir portas ou veículos sem arrombamento.",
+    prevencao: "Revise suas fotos antes de postar para garantir que chaves de casa, empresa ou veículo não apareçam visíveis. Nunca publique fotos das chaves de um imóvel novo junto com o endereço e prefira fechaduras multiponto ou eletrônicas.",
+    episodioLabel: "Ep. 16 • Clonagem de Chaves por Fotos (3D)",
+    audioUrl: "audios/episodio-16-clonagem-chaves-fotos.mp3",
+    tags: ["chaves", "clonagem de chave", "impressao 3d", "fotos", "redes sociais", "seguranca residencial", "carro", "invasao", "podcast"]
+  },
 ];
