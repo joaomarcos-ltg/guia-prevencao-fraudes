@@ -192,4 +192,16 @@ const bancoGolpes = [
     audioUrl: "audios/episodio-16-clonagem-chaves-fotos.mp3",
     tags: ["chaves", "clonagem de chave", "impressao 3d", "fotos", "redes sociais", "seguranca residencial", "carro", "invasao", "podcast"]
   },
+  {
+    id: "erros-perigosos-guardar-senhas",
+    categoria: "whatsapp",
+    categoriaLabel: "Senhas & Privacidade Digital",
+    titulo: "3 Erros Perigosos ao Guardar Senhas (Papel, Bloco de Notas e Repetição)",
+    resumo: "Anotar senhas na carteira, salvar no bloco de notas sem criptografia ou repetir a mesma senha em vários sites expõe todas as suas contas.",
+    comoFunciona: "Três hábitos comuns facilitam invasões sem exigir conhecimento técnico avançado: guardar papéis com senhas e nomes de bancos na carteira ou gaveta; salvar credenciais no Bloco de Notas do celular, que não possui criptografia caso o aparelho seja roubado desbloqueado; e reutilizar a mesma senha em bancos, e-mails e lojas, permitindo que um único vazamento comprometa todas as suas contas pelo efeito dominó digital.",
+    prevencao: "Ative e utilize o gerenciador de senhas nativo e criptografado do Google (Android/Chrome) ou das Chaves do iCloud (iPhone), que cria e salva senhas únicas para cada serviço. Nunca salve senhas no bloco de notas comum e, se precisar anotar algo em papel, jamais escreva o nome do banco ou serviço ao lado.",
+    episodioLabel: "Ep. 17 • 3 Erros ao Guardar Senhas",
+    audioUrl: "audios/episodio-17-erros-guardar-senhas.mp3",
+    tags: ["senhas", "gerenciador de senhas", "bloco de notas", "carteira", "efeito domino", "vazamento de dados", "privacidade", "idosos", "seguranca", "podcast"]
+  },
 ];
