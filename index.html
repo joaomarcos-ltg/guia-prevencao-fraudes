@@ -75,11 +75,11 @@
         <i class="fa-solid fa-circle-exclamation text-amber-400"></i>
         <span>Encontrou algum link ou mídia que parou de funcionar?</span>
       </div>
-      <a href="https://wa.me/5514998602147?text=Ol%C3%A1%2C%20encontrei%20um%20link%20quebrado%20na%20Enciclop%C3%A9dia%20de%20Golpes." target="_blank"
-        class="text-amber-400 hover:text-amber-300 font-semibold whitespace-nowrap transition flex items-center gap-1">
-        <span>Avisar suporte</span>
-        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-      </a>
+      <button type="button" onclick="abrirModalContato()"
+            class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg cursor-pointer">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Enviar Mensagem ou Ideia</span>
+          </button>
     </div>
 
     <!-- Grid de Golpes -->
@@ -470,6 +470,153 @@
             }
           })
           .catch(() => {});
+      })();
+    </script>
+
+    <!-- Modal de Contato Seguro com CAPTCHA -->
+    <div id="modal-contato" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+      <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+        <button type="button" onclick="fecharModalContato()" aria-label="Fechar"
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="flex items-center gap-2 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-1">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Contato Seguro</span>
+        </div>
+        <h3 class="text-xl font-bold text-white">Fale com a Curadoria</h3>
+        <p class="text-xs text-slate-400 mt-1 mb-4">
+          Envie sua dúvida, sugestão de novo golpe ou ideia de aplicativo diretamente por e-mail.
+        </p>
+
+        <form id="form-contato-seguro" class="space-y-3">
+          <!-- Honeypot invisível contra robôs -->
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Seu Nome</label>
+            <input type="text" id="contato-nome" name="nome" required placeholder="Ex.: Carlos Silva"
+              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Seu E-mail ou WhatsApp (para retorno)</label>
+            <input type="text" id="contato-retorno" name="contato_retorno" required placeholder="seuemail@exemplo.com"
+              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-medium text-slate-300 mb-1">Mensagem ou Ideia</label>
+            <textarea id="contato-mensagem" name="mensagem" rows="3" required placeholder="Descreva sua dúvida ou ideia..."
+              class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
+          </div>
+
+          <div class="bg-slate-800/70 border border-slate-700 rounded-lg p-3">
+            <label class="block text-xs font-medium text-emerald-400 mb-1">
+              <i class="fa-solid fa-robot mr-1"></i> Verificação Anti-Robô (CAPTCHA): quanto é <span id="captcha-pergunta" class="font-bold text-white"></span>?
+            </label>
+            <input type="number" id="captcha-resposta" required placeholder="Digite o resultado"
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <p id="contato-status" class="text-xs hidden"></p>
+
+          <button type="submit" id="btn-enviar-contato"
+            class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Enviar Mensagem</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        let captchaSoma = 0;
+
+        function gerarCaptcha() {
+          const a = Math.floor(Math.random() * 8) + 2;
+          const b = Math.floor(Math.random() * 8) + 1;
+          captchaSoma = a + b;
+          const el = document.getElementById('captcha-pergunta');
+          if (el) el.innerText = `${a} + ${b}`;
+          const inp = document.getElementById('captcha-resposta');
+          if (inp) inp.value = '';
+        }
+
+        window.abrirModalContato = function() {
+          gerarCaptcha();
+          const status = document.getElementById('contato-status');
+          if (status) status.classList.add('hidden');
+          const modal = document.getElementById('modal-contato');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+        };
+
+        window.fecharModalContato = function() {
+          const modal = document.getElementById('modal-contato');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        };
+
+        const form = document.getElementById('form-contato-seguro');
+        if (!form) return;
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const status = document.getElementById('contato-status');
+          const btn = document.getElementById('btn-enviar-contato');
+          const resp = parseInt(document.getElementById('captcha-resposta').value, 10);
+
+          if (resp !== captchaSoma) {
+            status.innerText = '❌ Resposta do CAPTCHA incorreta. Tente novamente.';
+            status.className = 'text-xs text-rose-400 block';
+            gerarCaptcha();
+            return;
+          }
+
+          btn.disabled = true;
+          btn.innerHTML = '<span>Enviando...</span>';
+          status.classList.add('hidden');
+
+          const payload = {
+            _subject: 'Contato via Guia de Prevenção a Fraudes',
+            _template: 'table',
+            _captcha: 'false',
+            Nome: document.getElementById('contato-nome').value,
+            Retorno: document.getElementById('contato-retorno').value,
+            Mensagem: document.getElementById('contato-mensagem').value
+          };
+
+          fetch('https://formsubmit.co/ajax/legiaotecnica@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success === 'true' || data.success === true) {
+              status.innerText = '✅ Mensagem enviada com sucesso! Em breve retornaremos.';
+              status.className = 'text-xs text-emerald-400 block';
+              form.reset();
+              gerarCaptcha();
+            } else {
+              throw new Error('Falha no envio');
+            }
+          })
+          .catch(() => {
+            status.innerText = '⚠️ Não foi possível enviar agora. Tente novamente em instantes.';
+            status.className = 'text-xs text-amber-400 block';
+          })
+          .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Enviar Mensagem</span>';
+          });
+        });
       })();
     </script>
 </body>
