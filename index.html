@@ -438,8 +438,6 @@
         }
       });
     </script>
-    
-
     <script>
       (function() {
         const badge = document.getElementById('badge-visitas');
@@ -447,23 +445,28 @@
         if (!badge || !span) return;
 
         const key = 'guia-prevencao-fraudes-jm-2026';
-        const localKey = 'jm_guia_visitas_local';
-        let localCount = parseInt(localStorage.getItem(localKey) || '14', 10) + 1;
-        localStorage.setItem(localKey, String(localCount));
+        const flagUnico = 'jm_guia_visitante_unico_v1';
+        const jaContabilizado = localStorage.getItem(flagUnico) === '1';
 
-        // Exibe valor inicial imediatamente para nunca ficar invisível
-        span.innerText = localCount.toLocaleString('pt-BR');
-        badge.classList.remove('hidden');
+        const endpoint = jaContabilizado
+          ? `https://api.counterapi.dev/v1/joaomarcos-apps/${key}`
+          : `https://api.counterapi.dev/v1/joaomarcos-apps/${key}/up`;
 
-        // Atualiza com o contador global em nuvem se a rede permitir
-        fetch(`https://api.counterapi.dev/v1/joaomarcos-apps/${key}/up`)
+        fetch(endpoint)
           .then(res => res.json())
           .then(data => {
             if (data && typeof data.count === 'number' && data.count > 0) {
-              span.innerText = Math.max(data.count, localCount).toLocaleString('pt-BR');
+              span.innerText = data.count.toLocaleString('pt-BR');
+              badge.classList.remove('hidden');
+              if (!jaContabilizado) {
+                localStorage.setItem(flagUnico, '1');
+              }
             }
           })
-          .catch(() => {});
+          .catch(() => {
+            span.innerText = '14';
+            badge.classList.remove('hidden');
+          });
       })();
     </script>
 </body>
