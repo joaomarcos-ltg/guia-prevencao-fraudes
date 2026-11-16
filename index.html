@@ -31,6 +31,21 @@
 
   <!-- Principal -->
   <main class="max-w-6xl mx-auto px-4 py-10 flex-1 w-full">
+    <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mb-10 bg-slate-900/80 border border-slate-800 p-2 rounded-2xl max-w-2xl mx-auto shadow-lg">
+      <button type="button" onclick="trocarAba('fraudes')" id="tab-btn-fraudes"
+        class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-red-600 text-white shadow cursor-pointer">
+        <i class="fa-solid fa-shield-halved"></i><span>Prevenção a Fraudes</span>
+      </button>
+      <button type="button" onclick="trocarAba('dicas')" id="tab-btn-dicas"
+        class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
+        <i class="fa-solid fa-compass"></i><span>Sites & Dicas Úteis</span>
+      </button>
+      <button type="button" onclick="trocarAba('apps')" id="tab-btn-apps"
+        class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
+        <i class="fa-solid fa-cart-shopping"></i><span>Apps Úteis</span>
+      </button>
+    </div>
+    <div id="aba-fraudes">
     
     <div class="text-center max-w-2xl mx-auto mb-10">
       <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-semibold mb-4">
@@ -85,6 +100,90 @@
     <!-- Grid de Golpes -->
     <div id="gridGolpes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
+    </div>
+    <div id="aba-dicas" class="hidden">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-compass"></i><span>Radar Web, Economia & Produtividade</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Sites & Dicas Úteis</h2>
+        <p class="text-sm sm:text-base text-slate-400">Ferramentas gratuitas, atalhos inteligentes para economizar nas compras e recursos práticos para o dia a dia.</p>
+      </div>
+      <div class="mb-8 max-w-md mx-auto relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+        <input type="text" id="campoBuscaDicas" oninput="filtrarDicas()" placeholder="Buscar dica (ex: desconto, TV aberta, vazamento)..."
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition">
+      </div>
+      <div id="gridDicas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <div id="aba-apps" class="hidden">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-cart-shopping"></i><span>Aplicativo Gratuito • Salva no Celular</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Comparador de Preços de Mercado</h2>
+        <p class="text-sm sm:text-base text-slate-400">Cadastre os itens da sua compra, informe os preços em até <strong>3 mercados</strong> e gere a lista inteligente indicando onde cada item está mais barato.</p>
+      </div>
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3"><i class="fa-solid fa-store mr-1.5"></i>1. Nomes dos 3 Mercados</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input type="text" id="nomeMercado1" value="Mercado 1" oninput="salvarNomesMercados()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+            <input type="text" id="nomeMercado2" value="Mercado 2" oninput="salvarNomesMercados()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+            <input type="text" id="nomeMercado3" value="Mercado 3" oninput="salvarNomesMercados()" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3"><i class="fa-solid fa-plus-circle mr-1.5"></i>2. Adicionar Produto</h3>
+          <form id="formProdutoMercado" onsubmit="adicionarProdutoMercado(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+              <div class="sm:col-span-3">
+                <label class="block text-[11px] text-slate-400 mb-1">Produto / Marca</label>
+                <input type="text" id="prodNome" required placeholder="Ex.: Arroz 5kg, Café 500g, Leite..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Qtd</label>
+                <input type="number" id="prodQtd" min="1" step="1" value="1" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div><label id="lblPreco1" class="block text-[11px] text-slate-400 mb-1">Preço Mercado 1 (R$)</label><input type="number" id="prodPreco1" min="0" step="0.01" placeholder="0,00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white"></div>
+              <div><label id="lblPreco2" class="block text-[11px] text-slate-400 mb-1">Preço Mercado 2 (R$)</label><input type="number" id="prodPreco2" min="0" step="0.01" placeholder="0,00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white"></div>
+              <div><label id="lblPreco3" class="block text-[11px] text-slate-400 mb-1">Preço Mercado 3 (R$)</label><input type="number" id="prodPreco3" min="0" step="0.01" placeholder="0,00" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white"></div>
+            </div>
+            <div class="flex justify-end">
+              <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"><i class="fa-solid fa-plus mr-1"></i>Incluir Produto</button>
+            </div>
+          </form>
+        </div>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-lg">
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Produtos (<span id="totalItensMercado">0</span>)</h3>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="limparListaMercado()" class="text-xs text-rose-400 border border-rose-500/30 bg-rose-500/10 px-3 py-1.5 rounded-xl cursor-pointer">Limpar Tudo</button>
+              <button type="button" onclick="gerarListaMelhoresPrecos()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-xl shadow-md cursor-pointer"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Gerar Lista dos Melhores Preços</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead><tr class="border-b border-slate-800 text-slate-400"><th class="py-2 px-2">Produto</th><th class="py-2 px-2 text-center">Qtd</th><th id="thMercado1" class="py-2 px-2 text-right">Mercado 1</th><th id="thMercado2" class="py-2 px-2 text-right">Mercado 2</th><th id="thMercado3" class="py-2 px-2 text-right">Mercado 3</th><th class="py-2 px-2 text-center">Ação</th></tr></thead>
+              <tbody id="tabelaProdutosMercado" class="divide-y divide-slate-800/70 text-slate-200"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="resultadoMelhorLista" class="hidden bg-gradient-to-br from-emerald-950/60 via-slate-900 to-slate-900 border border-emerald-500/40 rounded-2xl p-6 shadow-2xl space-y-4">
+          <div class="flex items-center justify-between flex-wrap gap-3 border-b border-emerald-500/20 pb-4">
+            <h3 class="text-lg font-extrabold text-white">Lista Otimizada — Melhores Preços</h3>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="copiarListaMercado()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs px-3.5 py-2 rounded-xl border border-slate-700 cursor-pointer"><i class="fa-regular fa-copy mr-1"></i>Copiar</button>
+              <button type="button" onclick="compartilharListaWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 rounded-xl shadow cursor-pointer"><i class="fa-brands fa-whatsapp mr-1"></i>Compartilhar no WhatsApp</button>
+            </div>
+          </div>
+          <div id="conteudoListaOtimizada" class="space-y-3 text-xs sm:text-sm"></div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Modal de Detalhes & Podcast/Mídia -->
@@ -115,7 +214,7 @@
           <span class="font-bold text-emerald-400 block mb-1">
             <i class="fa-solid fa-shield-check mr-1"></i> Regra de Prevenção Técnica:
           </span>
-          <p id="modalPrevencao" class="leading-relaxed text-slate-300"></p>
+          <p id="modalPrevencao" class="leading-relaxed text-slate-300"></p><div id="modalLinkDicaWrapper" class="mt-3 hidden"><a id="modalLinkDica" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition"><i class="fa-solid fa-arrow-up-right-from-square"></i><span id="modalLinkDicaLabel">Acessar</span></a></div>
         </div>
       </div>
     </div>
@@ -125,6 +224,7 @@
   
 
   <script src="golpes.js"></script>
+  <script src="dicas.js"></script>
   <script>
     let categoriaAtiva = 'todas';
     let audioAtual = null;
@@ -388,6 +488,238 @@
       atualizarContadores();
       renderizarCards(bancoGolpes);
     });
+
+    function trocarAba(aba) {
+      ['fraudes', 'dicas', 'apps'].forEach(nome => {
+        const painel = document.getElementById('aba-' + nome);
+        const btn = document.getElementById('tab-btn-' + nome);
+        if (!painel || !btn) return;
+        if (nome === aba) {
+          painel.classList.remove('hidden');
+          const cor = nome === 'fraudes' ? 'bg-red-600' : (nome === 'dicas' ? 'bg-cyan-600' : 'bg-emerald-600');
+          btn.className = `flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition ${cor} text-white shadow cursor-pointer`;
+        } else {
+          painel.classList.add('hidden');
+          btn.className = 'flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer';
+        }
+      });
+    }
+
+    function renderizarDicas(lista) {
+      const grid = document.getElementById('gridDicas');
+      if (!grid) return;
+      grid.innerHTML = '';
+      if (!lista || lista.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500 text-sm">Nenhuma dica encontrada.</div>';
+        return;
+      }
+      lista.forEach(dica => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900/90 border border-slate-800 hover:border-cyan-500/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">${dica.categoriaLabel}</span>
+              <div class="w-8 h-8 rounded-lg bg-slate-800 text-cyan-400 flex items-center justify-center"><i class="fa-solid fa-lightbulb"></i></div>
+            </div>
+            <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors mb-2">${dica.titulo}</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">${dica.resumo}</p>
+          </div>
+          <button type="button" onclick="abrirModalDica('${dica.id}')" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-cyan-600 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-slate-700 text-slate-200 transition cursor-pointer">
+            <i class="fa-solid fa-headphones text-[11px]"></i><span>Ouvir Dica & Detalhes</span>
+          </button>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function filtrarDicas() {
+      const termo = (document.getElementById('campoBuscaDicas')?.value || '').toLowerCase();
+      const filtradas = (typeof bancoDicas !== 'undefined' ? bancoDicas : []).filter(d =>
+        termo === '' || d.titulo.toLowerCase().includes(termo) || d.resumo.toLowerCase().includes(termo) || d.tags.some(t => t.toLowerCase().includes(termo))
+      );
+      renderizarDicas(filtradas);
+    }
+
+    function abrirModalDica(id) {
+      const dica = (typeof bancoDicas !== 'undefined' ? bancoDicas : []).find(d => d.id === id);
+      if (!dica) return;
+      bancoGolpes.push({ id: '__temp_dica__', categoriaLabel: dica.categoriaLabel, titulo: dica.titulo, comoFunciona: dica.comoFunciona, prevencao: dica.dicaPratica, episodioLabel: dica.episodioLabel, audioUrl: dica.audioUrl });
+      abrirModal('__temp_dica__');
+      bancoGolpes.pop();
+      const linkWrap = document.getElementById('modalLinkDicaWrapper');
+      if (linkWrap && dica.siteUrl) {
+        document.getElementById('modalLinkDica').href = dica.siteUrl;
+        document.getElementById('modalLinkDicaLabel').innerText = dica.siteLabel || 'Acessar Site';
+        linkWrap.classList.remove('hidden');
+      }
+    }
+
+    const _abrirModalOrig = abrirModal;
+    abrirModal = function(id) {
+      const linkWrap = document.getElementById('modalLinkDicaWrapper');
+      if (linkWrap && id !== '__temp_dica__') linkWrap.classList.add('hidden');
+      _abrirModalOrig(id);
+    };
+
+    const STORAGE_KEY_MERCADOS = 'jm_comparador_mercados_nomes_v1';
+    const STORAGE_KEY_ITENS = 'jm_comparador_mercados_itens_v1';
+    let textoCompartilhamentoMercado = '';
+
+    function obterNomesMercados() {
+      return [
+        (document.getElementById('nomeMercado1')?.value || '').trim() || 'Mercado 1',
+        (document.getElementById('nomeMercado2')?.value || '').trim() || 'Mercado 2',
+        (document.getElementById('nomeMercado3')?.value || '').trim() || 'Mercado 3'
+      ];
+    }
+
+    function atualizarRotulosMercados() {
+      const [m1, m2, m3] = obterNomesMercados();
+      if (document.getElementById('lblPreco1')) document.getElementById('lblPreco1').innerText = `Preço em ${m1} (R$)`;
+      if (document.getElementById('lblPreco2')) document.getElementById('lblPreco2').innerText = `Preço em ${m2} (R$)`;
+      if (document.getElementById('lblPreco3')) document.getElementById('lblPreco3').innerText = `Preço em ${m3} (R$)`;
+      if (document.getElementById('thMercado1')) document.getElementById('thMercado1').innerText = m1;
+      if (document.getElementById('thMercado2')) document.getElementById('thMercado2').innerText = m2;
+      if (document.getElementById('thMercado3')) document.getElementById('thMercado3').innerText = m3;
+    }
+
+    function salvarNomesMercados() {
+      localStorage.setItem(STORAGE_KEY_MERCADOS, JSON.stringify(obterNomesMercados()));
+      atualizarRotulosMercados();
+    }
+
+    function carregarItensMercado() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY_ITENS) || '[]'); } catch { return []; }
+    }
+
+    function salvarItensMercado(itens) {
+      localStorage.setItem(STORAGE_KEY_ITENS, JSON.stringify(itens));
+      renderizarTabelaMercado();
+    }
+
+    function formatarBRL(v) {
+      if (!v || isNaN(v) || v <= 0) return '—';
+      return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function adicionarProdutoMercado(e) {
+      e.preventDefault();
+      const nome = document.getElementById('prodNome').value.trim();
+      const qtd = Math.max(1, parseInt(document.getElementById('prodQtd').value, 10) || 1);
+      const p1 = parseFloat(document.getElementById('prodPreco1').value) || 0;
+      const p2 = parseFloat(document.getElementById('prodPreco2').value) || 0;
+      const p3 = parseFloat(document.getElementById('prodPreco3').value) || 0;
+      if (!nome) return;
+      if (p1 <= 0 && p2 <= 0 && p3 <= 0) { alert('Informe o preço em pelo menos 1 mercado.'); return; }
+      const itens = carregarItensMercado();
+      itens.push({ id: Date.now(), nome, qtd, precos: [p1, p2, p3] });
+      salvarItensMercado(itens);
+      ['prodNome', 'prodPreco1', 'prodPreco2', 'prodPreco3'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('prodQtd').value = '1';
+      document.getElementById('prodNome').focus();
+    }
+
+    function removerItemMercado(id) {
+      salvarItensMercado(carregarItensMercado().filter(i => i.id !== id));
+      document.getElementById('resultadoMelhorLista')?.classList.add('hidden');
+    }
+
+    function limparListaMercado() {
+      if (!confirm('Apagar todos os produtos cadastrados?')) return;
+      localStorage.removeItem(STORAGE_KEY_ITENS);
+      renderizarTabelaMercado();
+      document.getElementById('resultadoMelhorLista')?.classList.add('hidden');
+    }
+
+    function renderizarTabelaMercado() {
+      const tbody = document.getElementById('tabelaProdutosMercado');
+      if (!tbody) return;
+      const itens = carregarItensMercado();
+      if (document.getElementById('totalItensMercado')) document.getElementById('totalItensMercado').innerText = itens.length;
+      if (itens.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">Nenhum produto cadastrado ainda.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = itens.map(item => {
+        const validos = item.precos.filter(p => p > 0);
+        const menor = validos.length ? Math.min(...validos) : 0;
+        const cels = item.precos.map(p => `<td class="py-2 px-2 text-right ${(p > 0 && p === menor && validos.length > 1) ? 'text-emerald-400 font-bold' : 'text-slate-300'}">${formatarBRL(p)}</td>`).join('');
+        return `<tr class="hover:bg-slate-800/40"><td class="py-2 px-2 font-medium text-white">${item.nome}</td><td class="py-2 px-2 text-center text-slate-400">${item.qtd}x</td>${cels}<td class="py-2 px-2 text-center"><button type="button" onclick="removerItemMercado(${item.id})" class="text-slate-500 hover:text-rose-400 cursor-pointer"><i class="fa-solid fa-xmark"></i></button></td></tr>`;
+      }).join('');
+    }
+
+    function gerarListaMelhoresPrecos() {
+      const itens = carregarItensMercado();
+      if (itens.length === 0) { alert('Cadastre pelo menos um produto.'); return; }
+      const mercados = obterNomesMercados();
+      const grupos = { 0: [], 1: [], 2: [] };
+      let totalOtimizado = 0, totalMaisCaro = 0;
+
+      itens.forEach(item => {
+        let melhorIdx = -1, menorPreco = Infinity, maiorPreco = 0;
+        item.precos.forEach((p, idx) => {
+          if (p > 0) {
+            if (p < menorPreco) { menorPreco = p; melhorIdx = idx; }
+            if (p > maiorPreco) maiorPreco = p;
+          }
+        });
+        if (melhorIdx !== -1) {
+          const subtotal = menorPreco * item.qtd;
+          totalOtimizado += subtotal;
+          totalMaisCaro += (maiorPreco * item.qtd);
+          grupos[melhorIdx].push({ nome: item.nome, qtd: item.qtd, unitario: menorPreco, subtotal });
+        }
+      });
+
+      const economia = Math.max(0, totalMaisCaro - totalOtimizado);
+      let htmlRes = '';
+      let linhasZap = ['🛒 *LISTA INTELIGENTE DE SUPERMERCADO*'];
+
+      [0, 1, 2].forEach(idx => {
+        const listaM = grupos[idx];
+        if (!listaM.length) return;
+        const subM = listaM.reduce((a, x) => a + x.subtotal, 0);
+        linhasZap.push('', `🏪 *${mercados[idx].toUpperCase()}* (${formatarBRL(subM)})`);
+        const itensHtml = listaM.map(x => {
+          linhasZap.push(`• ${x.qtd}x ${x.nome} — ${formatarBRL(x.unitario)} un. (${formatarBRL(x.subtotal)})`);
+          return `<li class="flex justify-between py-1.5 border-b border-slate-800/60 last:border-none"><span class="text-slate-200"><strong>${x.qtd}x</strong> ${x.nome}</span><span class="text-emerald-400 font-semibold">${formatarBRL(x.unitario)} un. (${formatarBRL(x.subtotal)})</span></li>`;
+        }).join('');
+        htmlRes += `<div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4"><div class="flex justify-between mb-2"><span class="font-bold text-emerald-400"><i class="fa-solid fa-store mr-1.5"></i>${mercados[idx]}</span><span class="text-xs font-bold text-emerald-300">Subtotal: ${formatarBRL(subM)}</span></div><ul class="text-xs">${itensHtml}</ul></div>`;
+      });
+
+      linhasZap.push('', `💰 *Total Otimizado:* ${formatarBRL(totalOtimizado)}`);
+      if (economia > 0) linhasZap.push(`🎉 *Economia Estimada:* ${formatarBRL(economia)}`);
+      linhasZap.push('', '📲 https://guia-prevencao-fraudes.vercel.app');
+      textoCompartilhamentoMercado = linhasZap.join('\n');
+
+      htmlRes += `<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 flex flex-wrap justify-between gap-3"><div><span class="text-xs text-slate-300 block">Total nos melhores preços:</span><span class="text-xl font-extrabold text-white">${formatarBRL(totalOtimizado)}</span></div>${economia > 0 ? `<div class="text-right"><span class="text-xs text-emerald-300 block">Economia estimada:</span><span class="text-lg font-extrabold text-emerald-400">-${formatarBRL(economia)}</span></div>` : ''}</div>`;
+
+      document.getElementById('conteudoListaOtimizada').innerHTML = htmlRes;
+      document.getElementById('resultadoMelhorLista').classList.remove('hidden');
+    }
+
+    function copiarListaMercado() {
+      if (textoCompartilhamentoMercado) navigator.clipboard.writeText(textoCompartilhamentoMercado).then(() => alert('✅ Lista copiada!'));
+    }
+
+    function compartilharListaWhatsApp() {
+      if (textoCompartilhamentoMercado) window.open('https://wa.me/?text=' + encodeURIComponent(textoCompartilhamentoMercado), '_blank');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof bancoDicas !== 'undefined') renderizarDicas(bancoDicas);
+      try {
+        const salvos = JSON.parse(localStorage.getItem(STORAGE_KEY_MERCADOS) || 'null');
+        if (Array.isArray(salvos) && salvos.length === 3) {
+          document.getElementById('nomeMercado1').value = salvos[0];
+          document.getElementById('nomeMercado2').value = salvos[1];
+          document.getElementById('nomeMercado3').value = salvos[2];
+        }
+      } catch {}
+      atualizarRotulosMercados();
+      renderizarTabelaMercado();
+    });
+
   </script>
 
 
