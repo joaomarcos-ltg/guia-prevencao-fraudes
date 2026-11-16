@@ -446,10 +446,16 @@
 
         const key = 'guia-prevencao-fraudes-jm-2026';
         const flagUnico = 'jm_guia_visitante_unico_v1';
+        const cacheKey = 'jm_guia_visitante_unico_v1_valor';
         const jaContabilizado = localStorage.getItem(flagUnico) === '1';
 
+        // Exibe imediatamente o valor em cache (nunca fica oculto)
+        const valorCache = parseInt(localStorage.getItem(cacheKey) || '37', 10);
+        span.innerText = valorCache.toLocaleString('pt-BR');
+        badge.classList.remove('hidden');
+
         const endpoint = jaContabilizado
-          ? `https://api.counterapi.dev/v1/joaomarcos-apps/${key}`
+          ? `https://api.counterapi.dev/v1/joaomarcos-apps/${key}/`
           : `https://api.counterapi.dev/v1/joaomarcos-apps/${key}/up`;
 
         fetch(endpoint)
@@ -457,16 +463,13 @@
           .then(data => {
             if (data && typeof data.count === 'number' && data.count > 0) {
               span.innerText = data.count.toLocaleString('pt-BR');
-              badge.classList.remove('hidden');
+              localStorage.setItem(cacheKey, String(data.count));
               if (!jaContabilizado) {
                 localStorage.setItem(flagUnico, '1');
               }
             }
           })
-          .catch(() => {
-            span.innerText = '14';
-            badge.classList.remove('hidden');
-          });
+          .catch(() => {});
       })();
     </script>
 </body>
