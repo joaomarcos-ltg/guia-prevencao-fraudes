@@ -412,11 +412,11 @@
           </p>
         </div>
         <div class="shrink-0">
-          <a href="https://wa.me/5514998602147?text=Ol%C3%A1%20Jo%C3%A3o%20Marcos!%20Vi%20o%20Guia%20de%20Preven%C3%A7%C3%A3o%20a%20Fraudes%20e%20gostaria%20de%20conversar%20sobre%20a%20ideia%20de%20um%20aplicativo."
-             target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg">
-            <span>Falar no WhatsApp: (14) 99860-2147</span>
-          </a>
+          <button type="button" onclick="abrirModalContato()"
+            class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg cursor-pointer">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Enviar Mensagem ou Ideia</span>
+          </button>
         </div>
       </div>
     </section>
@@ -477,7 +477,7 @@
     <div id="modal-contato" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
       <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
         <button type="button" onclick="fecharModalContato()" aria-label="Fechar"
-          class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+          class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg cursor-pointer">
           <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -487,28 +487,30 @@
         </div>
         <h3 class="text-xl font-bold text-white">Fale com a Curadoria</h3>
         <p class="text-xs text-slate-400 mt-1 mb-4">
-          Envie sua dúvida, sugestão de novo golpe ou ideia de aplicativo diretamente por e-mail.
+          Envie sua dúvida, sugestão de novo golpe ou ideia de aplicativo diretamente para legiaotecnica@gmail.com.
         </p>
 
-        <form id="form-contato-seguro" class="space-y-3">
-          <!-- Honeypot invisível contra robôs -->
+        <form id="form-contato-seguro" action="https://formsubmit.co/legiaotecnica@gmail.com" method="POST" class="space-y-3">
+          <input type="hidden" name="_subject" value="Novo Contato - Guia de Prevenção a Fraudes">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://guia-prevencao-fraudes.vercel.app/?enviado=1">
           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
           <div>
             <label class="block text-xs font-medium text-slate-300 mb-1">Seu Nome</label>
-            <input type="text" id="contato-nome" name="nome" required placeholder="Ex.: Carlos Silva"
+            <input type="text" id="contato-nome" name="Nome" required placeholder="Ex.: Carlos Silva"
               class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
           </div>
 
           <div>
             <label class="block text-xs font-medium text-slate-300 mb-1">Seu E-mail ou WhatsApp (para retorno)</label>
-            <input type="text" id="contato-retorno" name="contato_retorno" required placeholder="seuemail@exemplo.com"
+            <input type="text" id="contato-retorno" name="Contato_Retorno" required placeholder="seuemail@exemplo.com"
               class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
           </div>
 
           <div>
             <label class="block text-xs font-medium text-slate-300 mb-1">Mensagem ou Ideia</label>
-            <textarea id="contato-mensagem" name="mensagem" rows="3" required placeholder="Descreva sua dúvida ou ideia..."
+            <textarea id="contato-mensagem" name="Mensagem" rows="3" required placeholder="Descreva sua dúvida ou ideia..."
               class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500"></textarea>
           </div>
 
@@ -560,16 +562,22 @@
           modal.classList.remove('flex');
         };
 
+        // Exibe aviso de sucesso se retornou do envio
+        if (window.location.search.includes('enviado=1')) {
+          alert('✅ Mensagem enviada com sucesso para a curadoria! Obrigado pelo contato.');
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         const form = document.getElementById('form-contato-seguro');
         if (!form) return;
 
         form.addEventListener('submit', function(e) {
-          e.preventDefault();
           const status = document.getElementById('contato-status');
           const btn = document.getElementById('btn-enviar-contato');
           const resp = parseInt(document.getElementById('captcha-resposta').value, 10);
 
           if (resp !== captchaSoma) {
+            e.preventDefault();
             status.innerText = '❌ Resposta do CAPTCHA incorreta. Tente novamente.';
             status.className = 'text-xs text-rose-400 block';
             gerarCaptcha();
@@ -578,44 +586,6 @@
 
           btn.disabled = true;
           btn.innerHTML = '<span>Enviando...</span>';
-          status.classList.add('hidden');
-
-          const payload = {
-            _subject: 'Contato via Guia de Prevenção a Fraudes',
-            _template: 'table',
-            _captcha: 'false',
-            Nome: document.getElementById('contato-nome').value,
-            Retorno: document.getElementById('contato-retorno').value,
-            Mensagem: document.getElementById('contato-mensagem').value
-          };
-
-          fetch('https://formsubmit.co/ajax/legiaotecnica@gmail.com', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success === 'true' || data.success === true) {
-              status.innerText = '✅ Mensagem enviada com sucesso! Em breve retornaremos.';
-              status.className = 'text-xs text-emerald-400 block';
-              form.reset();
-              gerarCaptcha();
-            } else {
-              throw new Error('Falha no envio');
-            }
-          })
-          .catch(() => {
-            status.innerText = '⚠️ Não foi possível enviar agora. Tente novamente em instantes.';
-            status.className = 'text-xs text-amber-400 block';
-          })
-          .finally(() => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Enviar Mensagem</span>';
-          });
         });
       })();
     </script>
