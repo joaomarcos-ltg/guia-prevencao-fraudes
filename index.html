@@ -740,8 +740,12 @@
               Utilidade Pública &amp; Educação Digital
             </span>
             <span id="badge-visitas" class="hidden inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 bg-slate-900/90 border border-slate-700 px-3 py-1 rounded-full">
-              <i class="fa-solid fa-eye text-emerald-400"></i>
+              <i class="fa-solid fa-users text-emerald-400"></i>
               <span id="contador-visitas">...</span> visitantes
+            </span>
+            <span id="badge-views" class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 bg-slate-900/90 border border-slate-700 px-3 py-1 rounded-full">
+              <i class="fa-solid fa-eye text-cyan-400"></i>
+              <span id="contador-views">151</span> visualizações
             </span>
           </div>
           <h3 class="text-xl font-bold text-white">Curadoria: João Marcos</h3>
@@ -817,6 +821,27 @@
             }
           })
           .catch(() => {});
+
+        // Contador dinâmico de visualizações totais de página (base inicial: 151)
+        const spanViews = document.getElementById('contador-views');
+        if (spanViews) {
+          const OFFSET_VIEWS = 151;
+          const viewsKey = 'guia-prevencao-fraudes-jm-views-2026';
+          const viewsCacheKey = 'jm_guia_views_v1_valor';
+          const cacheViews = parseInt(localStorage.getItem(viewsCacheKey) || String(OFFSET_VIEWS), 10);
+          spanViews.innerText = cacheViews.toLocaleString('pt-BR');
+
+          fetch(`https://api.counterapi.dev/v1/joaomarcos-apps/${viewsKey}/up`)
+            .then(res => res.json())
+            .then(data => {
+              if (data && typeof data.count === 'number' && data.count > 0) {
+                const totalViews = OFFSET_VIEWS + data.count;
+                spanViews.innerText = totalViews.toLocaleString('pt-BR');
+                localStorage.setItem(viewsCacheKey, String(totalViews));
+              }
+            })
+            .catch(() => {});
+        }
       })();
     </script>
 
