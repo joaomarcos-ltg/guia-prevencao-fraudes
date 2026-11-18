@@ -85,6 +85,20 @@ const bancoGolpes = [
     tags: ["captcha", "clickfix", "powershell", "win r", "falso captcha", "malware", "infostealer", "engenharia social", "trojan", "podcast"]
   },
   {
+    id: "verificar-email-vazado-hibp",
+    categoria: "email",
+    categoriaLabel: "E-mail, Vazamentos & Privacidade",
+    titulo: "Como Verificar se Seu E-mail ou Senha Vazaram na Internet",
+    resumo: "Consulte gratuitamente na base mundial Have I Been Pwned se seu e-mail pessoal ou corporativo foi exposto em vazamentos de dados.",
+    comoFunciona: "Quando lojas, aplicativos ou plataformas sofrem invasões, bancos de dados com e-mails e senhas são vendidos ou divulgados na internet. Golpistas usam essas listas vazadas para aplicar phishing direcionado ou invadir outras contas onde você repete a mesma senha. O portal oficial haveibeenpwned.com cruza seu e-mail com bilhões de registros públicos conhecidos.",
+    prevencao: "Acesse https://haveibeenpwned.com e pesquise seu endereço de e-mail. Se aparecer alguma violação: (1) Em e-mail pessoal, troque a senha imediatamente, elimine senhas repetidas e ative a verificação em duas etapas (2FA); (2) Em e-mail corporativo, solicite ao setor de TI ou administrador a redefinição de senha e a ativação do duplo fator de autenticação.",
+    episodioLabel: "Bônus • Consulta de Vazamento (Have I Been Pwned)",
+    audioUrl: "audios/dica-have-i-been-pwned.mp3",
+    siteUrl: "https://haveibeenpwned.com/",
+    siteLabel: "Verificar E-mail no Have I Been Pwned",
+    tags: ["vazamento", "email", "senha", "have i been pwned", "seguranca", "privacidade", "2fa", "duplo fator", "phishing", "podcast"]
+  },
+  {
     id: "alexa-compras-por-voz-indesejadas",
     categoria: "whatsapp",
     categoriaLabel: "Smart Home & Privacidade",
@@ -203,5 +217,5 @@ const bancoGolpes = [
     episodioLabel: "Ep. 17 • 3 Erros ao Guardar Senhas",
     audioUrl: "audios/episodio-17-erros-guardar-senhas.mp3",
     tags: ["senhas", "gerenciador de senhas", "bloco de notas", "carteira", "efeito domino", "vazamento de dados", "privacidade", "idosos", "seguranca", "podcast"]
-  },
+  }
 ];

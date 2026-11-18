@@ -557,7 +557,16 @@
     const _abrirModalOrig = abrirModal;
     abrirModal = function(id) {
       const linkWrap = document.getElementById('modalLinkDicaWrapper');
-      if (linkWrap && id !== '__temp_dica__') linkWrap.classList.add('hidden');
+      if (linkWrap) {
+        const item = bancoGolpes.find(g => g.id === id);
+        if (item && item.siteUrl && id !== '__temp_dica__') {
+          document.getElementById('modalLinkDica').href = item.siteUrl;
+          document.getElementById('modalLinkDicaLabel').innerText = item.siteLabel || 'Acessar Site';
+          linkWrap.classList.remove('hidden');
+        } else if (id !== '__temp_dica__') {
+          linkWrap.classList.add('hidden');
+        }
+      }
       _abrirModalOrig(id);
     };
 
