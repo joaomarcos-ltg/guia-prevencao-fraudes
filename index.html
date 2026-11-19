@@ -30,8 +30,10 @@
   </header>
 
   <!-- Principal -->
+  
+<!-- Principal -->
   <main class="max-w-6xl mx-auto px-4 py-10 flex-1 w-full">
-    <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mb-10 bg-slate-900/80 border border-slate-800 p-2 rounded-2xl max-w-2xl mx-auto shadow-lg">
+    <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mb-10 bg-slate-900/80 border border-slate-800 p-2 rounded-2xl max-w-3xl mx-auto shadow-lg">
       <button type="button" onclick="trocarAba('fraudes')" id="tab-btn-fraudes"
         class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition bg-red-600 text-white shadow cursor-pointer">
         <i class="fa-solid fa-shield-halved"></i><span>Prevenção a Fraudes</span>
@@ -44,7 +46,12 @@
         class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
         <i class="fa-solid fa-cart-shopping"></i><span>Apps Úteis</span>
       </button>
+      <button type="button" onclick="trocarAba('produtos')" id="tab-btn-produtos"
+        class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
+        <i class="fa-solid fa-shield-cat"></i><span>Kit Segurança</span>
+      </button>
     </div>
+  
     <div id="aba-fraudes">
     
     <div class="text-center max-w-2xl mx-auto mb-10">
@@ -184,6 +191,35 @@
         </div>
       </div>
     </div>
+
+<div id="aba-produtos" class="hidden">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold mb-4">
+          <i class="fa-solid fa-circle-check"></i><span>Curadoria Técnica • Hardware & Proteção Física</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Kit Segurança & Privacidade</h2>
+        <p class="text-sm sm:text-base text-slate-400">
+          Equipamentos físicos e acessórios selecionados pela curadoria para blindar seus cartões, celulares e computadores contra os golpes catalogados neste guia.
+        </p>
+      </div>
+
+      <!-- Barra de Busca -->
+      <div class="mb-6 max-w-md mx-auto relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+        <input type="text" id="campoBuscaProdutos" oninput="filtrarProdutos()" placeholder="Buscar item (ex: RFID, USB, webcam, película)..."
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+      </div>
+
+      <!-- Aviso de Transparência (Boas práticas de Afiliado) -->
+      <div class="mb-8 max-w-3xl mx-auto bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-center text-[11px] text-slate-400">
+        <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
+        Transparência: Os botões abaixo direcionam para lojas oficiais (Mercado Livre / Amazon). Como afiliado, a curadoria pode receber uma pequena comissão sem nenhum custo extra para você.
+      </div>
+
+      <!-- Grid de Produtos -->
+      <div id="gridProdutos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
   </main>
 
   <!-- Modal de Detalhes & Podcast/Mídia -->
@@ -225,6 +261,7 @@
 
   <script src="golpes.js"></script>
   <script src="dicas.js"></script>
+  <script src="produtos.js"></script>
   <script>
     let categoriaAtiva = 'todas';
     let audioAtual = null;
@@ -490,19 +527,65 @@
     });
 
     function trocarAba(aba) {
-      ['fraudes', 'dicas', 'apps'].forEach(nome => {
+      ['fraudes', 'dicas', 'apps', 'produtos'].forEach(nome => {
         const painel = document.getElementById('aba-' + nome);
         const btn = document.getElementById('tab-btn-' + nome);
         if (!painel || !btn) return;
         if (nome === aba) {
           painel.classList.remove('hidden');
-          const cor = nome === 'fraudes' ? 'bg-red-600' : (nome === 'dicas' ? 'bg-cyan-600' : 'bg-emerald-600');
-          btn.className = `flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition ${cor} text-white shadow cursor-pointer`;
+          const cores = {
+            fraudes: 'bg-red-600 text-white',
+            dicas: 'bg-cyan-600 text-white',
+            apps: 'bg-emerald-600 text-white',
+            produtos: 'bg-amber-500 text-slate-950'
+          };
+          btn.className = `flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition ${cores[nome]} shadow cursor-pointer`;
         } else {
           painel.classList.add('hidden');
           btn.className = 'flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer';
         }
       });
+    }
+
+    function renderizarProdutos(lista) {
+      const grid = document.getElementById('gridProdutos');
+      if (!grid) return;
+      grid.innerHTML = '';
+      if (!lista || lista.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500 text-sm">Nenhum equipamento encontrado com esse termo.</div>';
+        return;
+      }
+      lista.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 group";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">${prod.categoriaLabel}</span>
+              <div class="w-8 h-8 rounded-lg bg-slate-800 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-shield-halved"></i></div>
+            </div>
+            <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition-colors mb-2">${prod.titulo}</h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-3">${prod.resumo}</p>
+            <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 mb-4">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block mb-1"><i class="fa-solid fa-check-double mr-1"></i>Por que a curadoria indica:</span>
+              <p class="text-[11px] text-slate-400 leading-relaxed">${prod.indicacaoTecnica}</p>
+            </div>
+          </div>
+          <a href="${prod.linkAfiliado}" target="_blank" rel="noopener noreferrer sponsored"
+            class="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition shadow-md cursor-pointer">
+            <span>${prod.lojaLabel || 'Ver Preço Atual na Loja'}</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+          </a>`;
+        grid.appendChild(card);
+      });
+    }
+
+    function filtrarProdutos() {
+      const termo = (document.getElementById('campoBuscaProdutos')?.value || '').toLowerCase();
+      const filtrados = (typeof bancoProdutos !== 'undefined' ? bancoProdutos : []).filter(p =>
+        termo === '' || p.titulo.toLowerCase().includes(termo) || p.resumo.toLowerCase().includes(termo) || p.indicacaoTecnica.toLowerCase().includes(termo) || p.tags.some(t => t.toLowerCase().includes(termo))
+      );
+      renderizarProdutos(filtrados);
     }
 
     function renderizarDicas(lista) {
@@ -717,6 +800,7 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof bancoDicas !== 'undefined') renderizarDicas(bancoDicas);
+      if (typeof bancoProdutos !== 'undefined') renderizarProdutos(bancoProdutos);
       try {
         const salvos = JSON.parse(localStorage.getItem(STORAGE_KEY_MERCADOS) || 'null');
         if (Array.isArray(salvos) && salvos.length === 3) {
