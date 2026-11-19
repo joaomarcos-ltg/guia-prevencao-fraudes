@@ -70,7 +70,7 @@ const bancoProdutos = [
     indicacaoTecnica: "Única defesa infalível contra ataques de Ransomware (sequestro de dados) e falhas em nuvem, pois permanece fisicamente desconectado após a cópia.",
     ondeUsar: "Backup mensal de computadores domésticos, notebooks de trabalho e acervos pessoais.",
     lojaLabel: "Ver Oferta no Mercado Livre",
-    linkAfiliado: "COLE_SEU_LINK_MELI_LA_AQUI",
+    linkAfiliado: "https://meli.la/32rNRjP",
     tags: ["ssd", "hd externo", "backup", "ransomware", "arquivos", "fotos", "armazenamento"]
   },
   {
@@ -82,7 +82,7 @@ const bancoProdutos = [
     indicacaoTecnica: "Permite criar uma rede Wi-Fi separada para visitas e câmeras/Alexa (IoT), impedindo que um celular infectado de terceiros acesse seus computadores na rede principal.",
     ondeUsar: "Residências, home office e pequenos escritórios.",
     lojaLabel: "Ver Oferta no Mercado Livre",
-    linkAfiliado: "COLE_SEU_LINK_MELI_LA_AQUI",
+    linkAfiliado: "https://meli.la/1XvYfqt",
     tags: ["roteador", "wifi 6", "wpa3", "rede visitantes", "internet", "seguranca", "home office"]
   },
   {
@@ -94,7 +94,7 @@ const bancoProdutos = [
     indicacaoTecnica: "Evita a queima de fontes, placas-mãe e perda definitiva de HDs causada por picos de tensão — mantendo a disponibilidade física dos seus equipamentos.",
     ondeUsar: "Estações de trabalho, roteadores/modems, TVs e computadores.",
     lojaLabel: "Ver Oferta no Mercado Livre",
-    linkAfiliado: "COLE_SEU_LINK_MELI_LA_AQUI",
+    linkAfiliado: "https://meli.la/2ov8iud",
     tags: ["clamper", "filtro de linha", "dps", "surto", "raio", "energia", "computador", "roteador"]
   },
   {
@@ -106,7 +106,7 @@ const bancoProdutos = [
     indicacaoTecnica: "Neutraliza o risco de clonagem de chaves por fotos ou impressão 3D (abordado na aba Prevenção a Fraudes) e impede cópias não autorizadas.",
     ondeUsar: "Portas de entrada de residências, apartamentos e escritórios.",
     lojaLabel: "Ver Oferta no Mercado Livre",
-    linkAfiliado: "COLE_SEU_LINK_MELI_LA_AQUI",
+    linkAfiliado: "https://meli.la/2FbZbvU",
     tags: ["fechadura", "eletronica", "digital", "biometria", "chave", "clonagem", "porta", "casa"]
   }
 ];
