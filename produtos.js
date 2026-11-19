@@ -58,7 +58,7 @@ const bancoProdutos = [
     indicacaoTecnica: "Proteção máxima contra Phishing e sequestro de contas (Google, Microsoft, bancos e redes sociais). Sem o toque físico na chave, o invasor não consegue logar.",
     ondeUsar: "Contas de e-mail principais, gerenciadores de senhas, bancos e acesso corporativo.",
     lojaLabel: "Ver Oferta no Mercado Livre",
-    linkAfiliado: "COLE_SEU_LINK_MELI_LA_AQUI",
+    linkAfiliado: "https://meli.la/1bAS717",
     tags: ["yubikey", "fido2", "2fa", "token", "chave fisica", "phishing", "autenticacao", "senha"]
   },
   {
