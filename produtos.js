@@ -48,7 +48,6 @@ const bancoProdutos = [
     linkAfiliado: "https://meli.la/2zkZ9z8", // <-- SUBSTITUA PELO SEU LINK DE AFILIADO
     tags: ["pelicula", "privacidade", "anti espiao", "celular", "senha", "tela"]
   },
-  ,
   {
     id: "chave-seguranca-fisica-yubikey-fido2",
     categoria: "autenticacao",
