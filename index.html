@@ -261,6 +261,39 @@
     </div>
   </div>
 
+<!-- Modal Mapa do Site Interativo -->
+  <div id="modalMapaSite" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl relative">
+      <div class="flex items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+            <i class="fa-solid fa-sitemap"></i> Estrutura Completa & Navegação Rápida
+          </span>
+          <h2 class="text-xl font-extrabold text-white mt-0.5">Mapa do Portal • Guia de Segurança Digital</h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="alternarTodosRamosMapa(true)" class="hidden sm:inline-flex text-[11px] px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer">
+            Expandir tudo
+          </button>
+          <button type="button" onclick="alternarTodosRamosMapa(false)" class="hidden sm:inline-flex text-[11px] px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer">
+            Recolher
+          </button>
+          <button type="button" onclick="fecharMapaSite()" aria-label="Fechar Mapa"
+            class="text-slate-400 hover:text-white p-2 rounded-xl bg-slate-800 border border-slate-700 transition cursor-pointer">
+            <i class="fa-solid fa-xmark text-base"></i>
+          </button>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-400 mb-5">
+        Visualize toda a arquitetura do portal — da <strong class="text-slate-200">Entrada (Início)</strong> aos <strong class="text-slate-200">4 Pilares de Conteúdo</strong> até a <strong class="text-slate-200">Saída (Contato Seguro)</strong>. Clique em qualquer item para abrir diretamente.
+      </p>
+
+      <!-- Árvore Gerada Automaticamente -->
+      <div id="arvoreMapaSite" class="space-y-3 text-xs"></div>
+    </div>
+  </div>
+
   <!-- Rodapé Institucional -->
   
 
@@ -1050,5 +1083,246 @@
         });
       })();
     </script>
+
+<script>
+    function navegarPeloMapa(aba, acaoExtra) {
+      fecharMapaSite();
+      trocarAba(aba);
+      if (acaoExtra === 'golpe' && arguments[2]) {
+        abrirModal(arguments[2]);
+      } else if (acaoExtra === 'dica' && arguments[2]) {
+        abrirModalDica(arguments[2]);
+      } else if (acaoExtra === 'produto' && arguments[2]) {
+        const campo = document.getElementById('campoBuscaProdutos');
+        if (campo) {
+          campo.value = arguments[2];
+          filtrarProdutos();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (acaoExtra === 'contato') {
+        abrirModalContato();
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function toggleRamoMapa(idRamo) {
+      const conteudo = document.getElementById('ramo-body-' + idRamo);
+      const icone = document.getElementById('ramo-icon-' + idRamo);
+      if (!conteudo) return;
+      const oculto = conteudo.classList.toggle('hidden');
+      if (icone) icone.className = oculto ? 'fa-solid fa-plus text-[10px]' : 'fa-solid fa-minus text-[10px]';
+    }
+
+    function alternarTodosRamosMapa(expandir) {
+      document.querySelectorAll('[id^="ramo-body-"]').forEach(el => {
+        el.classList.toggle('hidden', !expandir);
+      });
+      document.querySelectorAll('[id^="ramo-icon-"]').forEach(ic => {
+        ic.className = expandir ? 'fa-solid fa-minus text-[10px]' : 'fa-solid fa-plus text-[10px]';
+      });
+    }
+
+    function construirMapaSite() {
+      const container = document.getElementById('arvoreMapaSite');
+      if (!container) return;
+
+      const golpes = typeof bancoGolpes !== 'undefined' ? bancoGolpes : [];
+      const dicas = typeof bancoDicas !== 'undefined' ? bancoDicas : [];
+      const produtos = typeof bancoProdutos !== 'undefined' ? bancoProdutos : [];
+
+      const gruposGolpes = [
+        { chave: 'banco', nome: '🏦 Bancos, PIX & Cartões', itens: golpes.filter(g => g.categoria === 'banco') },
+        { chave: 'email', nome: '📧 E-mail, Phishing & Vazamentos', itens: golpes.filter(g => g.categoria === 'email') },
+        { chave: 'whatsapp', nome: '💬 WhatsApp, Telefonia & Privacidade', itens: golpes.filter(g => g.categoria === 'whatsapp') }
+      ];
+
+      const totalGeral = golpes.length + dicas.length + produtos.length + 1;
+
+      container.innerHTML = `
+        <!-- NÓ RAIZ: ENTRADA -->
+        <div class="flex items-center justify-between flex-wrap gap-2 bg-blue-600/15 border border-blue-500/40 rounded-xl px-4 py-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
+              <i class="fa-solid fa-house text-xs"></i>
+            </span>
+            <div>
+              <span class="font-extrabold text-white text-sm block">INÍCIO • Portal João Marcos Segurança Digital</span>
+              <span class="text-[11px] text-blue-300">Ponto de entrada • ${totalGeral} recursos ativos catalogados</span>
+            </div>
+          </div>
+          <button type="button" onclick="navegarPeloMapa('fraudes')" class="text-[11px] font-bold text-blue-300 hover:text-white underline cursor-pointer">
+            Ir para o topo
+          </button>
+        </div>
+
+        <!-- TRONCO HIERÁRQUICO -->
+        <div class="ml-3 sm:ml-6 pl-4 sm:pl-6 border-l-2 border-slate-700 space-y-4">
+
+          <!-- RAMO 1: PREVENÇÃO A FRAUDES -->
+          <div class="relative">
+            <span class="hidden sm:block absolute -left-6 top-4 w-6 h-0.5 bg-slate-700"></span>
+            <div class="bg-slate-950/90 border border-red-500/30 rounded-xl p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <button type="button" onclick="toggleRamoMapa('fraudes')" class="flex items-center gap-2.5 text-left cursor-pointer">
+                  <span class="w-5 h-5 rounded bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center">
+                    <i id="ramo-icon-fraudes" class="fa-solid fa-minus text-[10px]"></i>
+                  </span>
+                  <span class="font-bold text-red-400 text-sm">1. Prevenção a Fraudes (${golpes.length} episódios)</span>
+                </button>
+                <button type="button" onclick="navegarPeloMapa('fraudes')" class="text-[11px] px-2.5 py-1 rounded-lg bg-red-500/10 hover:bg-red-500 hover:text-white text-red-300 border border-red-500/20 transition cursor-pointer">
+                  Abrir aba
+                </button>
+              </div>
+
+              <div id="ramo-body-fraudes" class="mt-3 ml-3 pl-4 border-l border-red-500/30 space-y-3">
+                ${gruposGolpes.map(grupo => `
+                  <div>
+                    <div class="font-bold text-slate-200 mb-1.5">${grupo.nome} (${grupo.itens.length})</div>
+                    <ul class="ml-2 pl-3 border-l border-slate-800 space-y-1">
+                      ${grupo.itens.map(g => `
+                        <li>
+                          <button type="button" onclick="navegarPeloMapa('fraudes', 'golpe', '${g.id}')"
+                            class="text-left text-slate-400 hover:text-red-300 transition flex items-start gap-1.5 cursor-pointer">
+                            <span class="text-slate-600 mt-0.5">├─</span>
+                            <span>${g.titulo}</span>
+                          </button>
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- RAMO 2: SITES & DICAS ÚTEIS -->
+          <div class="relative">
+            <span class="hidden sm:block absolute -left-6 top-4 w-6 h-0.5 bg-slate-700"></span>
+            <div class="bg-slate-950/90 border border-cyan-500/30 rounded-xl p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <button type="button" onclick="toggleRamoMapa('dicas')" class="flex items-center gap-2.5 text-left cursor-pointer">
+                  <span class="w-5 h-5 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center">
+                    <i id="ramo-icon-dicas" class="fa-solid fa-minus text-[10px]"></i>
+                  </span>
+                  <span class="font-bold text-cyan-400 text-sm">2. Sites & Dicas Úteis (${dicas.length} ferramentas)</span>
+                </button>
+                <button type="button" onclick="navegarPeloMapa('dicas')" class="text-[11px] px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-600 hover:text-white text-cyan-300 border border-cyan-500/20 transition cursor-pointer">
+                  Abrir aba
+                </button>
+              </div>
+
+              <div id="ramo-body-dicas" class="mt-3 ml-3 pl-4 border-l border-cyan-500/30">
+                <ul class="space-y-1">
+                  ${dicas.map(d => `
+                    <li>
+                      <button type="button" onclick="navegarPeloMapa('dicas', 'dica', '${d.id}')"
+                        class="text-left text-slate-400 hover:text-cyan-300 transition flex items-start gap-1.5 cursor-pointer">
+                        <span class="text-slate-600 mt-0.5">├─</span>
+                        <span>${d.titulo}</span>
+                      </button>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAMO 3: APPS ÚTEIS -->
+          <div class="relative">
+            <span class="hidden sm:block absolute -left-6 top-4 w-6 h-0.5 bg-slate-700"></span>
+            <div class="bg-slate-950/90 border border-emerald-500/30 rounded-xl p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <button type="button" onclick="toggleRamoMapa('apps')" class="flex items-center gap-2.5 text-left cursor-pointer">
+                  <span class="w-5 h-5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+                    <i id="ramo-icon-apps" class="fa-solid fa-minus text-[10px]"></i>
+                  </span>
+                  <span class="font-bold text-emerald-400 text-sm">3. Apps Úteis (1 aplicativo interativo)</span>
+                </button>
+                <button type="button" onclick="navegarPeloMapa('apps')" class="text-[11px] px-2.5 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-600 hover:text-white text-emerald-300 border border-emerald-500/20 transition cursor-pointer">
+                  Abrir aba
+                </button>
+              </div>
+
+              <div id="ramo-body-apps" class="mt-3 ml-3 pl-4 border-l border-emerald-500/30">
+                <button type="button" onclick="navegarPeloMapa('apps')"
+                  class="text-left text-slate-400 hover:text-emerald-300 transition flex items-start gap-1.5 cursor-pointer">
+                  <span class="text-slate-600 mt-0.5">└─</span>
+                  <span>Comparador Inteligente de Preços de Supermercado (3 mercados + envio WhatsApp)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAMO 4: KIT SEGURANÇA -->
+          <div class="relative">
+            <span class="hidden sm:block absolute -left-6 top-4 w-6 h-0.5 bg-slate-700"></span>
+            <div class="bg-slate-950/90 border border-amber-500/30 rounded-xl p-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <button type="button" onclick="toggleRamoMapa('produtos')" class="flex items-center gap-2.5 text-left cursor-pointer">
+                  <span class="w-5 h-5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center">
+                    <i id="ramo-icon-produtos" class="fa-solid fa-minus text-[10px]"></i>
+                  </span>
+                  <span class="font-bold text-amber-400 text-sm">4. Kit Segurança & Privacidade (${produtos.length} equipamentos)</span>
+                </button>
+                <button type="button" onclick="navegarPeloMapa('produtos', 'produto', '')" class="text-[11px] px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500 hover:text-slate-950 text-amber-300 border border-amber-500/20 transition cursor-pointer">
+                  Abrir aba
+                </button>
+              </div>
+
+              <div id="ramo-body-produtos" class="mt-3 ml-3 pl-4 border-l border-amber-500/30">
+                <ul class="space-y-1">
+                  ${produtos.map(p => `
+                    <li>
+                      <button type="button" onclick="navegarPeloMapa('produtos', 'produto', '${p.titulo.replace(/'/g, "\\'")}')"
+                        class="text-left text-slate-400 hover:text-amber-300 transition flex items-start gap-1.5 cursor-pointer">
+                        <span class="text-slate-600 mt-0.5">├─</span>
+                        <span><strong class="text-slate-300">[${p.categoriaLabel}]</strong> ${p.titulo}</span>
+                      </button>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- RAMO 5: SAÍDA / CONTATO -->
+          <div class="relative">
+            <span class="hidden sm:block absolute -left-6 top-4 w-6 h-0.5 bg-slate-700"></span>
+            <div class="bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-3.5 flex items-center justify-between flex-wrap gap-2">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+                  <i class="fa-solid fa-envelope text-[11px]"></i>
+                </span>
+                <div>
+                  <span class="font-bold text-emerald-300 text-sm block">5. Saída • Curadoria & Contato Seguro</span>
+                  <span class="text-[11px] text-slate-400">Envio de dúvidas, sugestão de novos golpes ou ideias de apps com CAPTCHA</span>
+                </div>
+              </div>
+              <button type="button" onclick="navegarPeloMapa('fraudes', 'contato')"
+                class="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition cursor-pointer">
+                Abrir Formulário
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function abrirMapaSite() {
+      construirMapaSite();
+      document.getElementById('modalMapaSite').classList.remove('hidden');
+    }
+
+    function fecharMapaSite() {
+      document.getElementById('modalMapaSite').classList.add('hidden');
+    }
+
+    document.getElementById('modalMapaSite')?.addEventListener('click', function(e) {
+      if (e.target === this) fecharMapaSite();
+    });
+  </script>
+
 </body>
 </html>
